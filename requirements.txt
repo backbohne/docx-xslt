@@ -1,0 +1,3 @@
+docx-xslt
+lxml>=3.4.1
+unidecode>=0.04.17
