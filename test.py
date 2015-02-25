@@ -2,7 +2,15 @@ import sys
 sys.path.insert(0, '..')
 
 from lxml import etree
-from docxxslt import DocxTemplate
+from docxxslt import DocxTemplate, xsl
+
+xsl.DEBUG = True
+
+def debug(mesg):
+    print mesg
+
+def warning(mesg):
+    print mesg
 
 filename = "test.docx"
 context = etree.XML("""
@@ -30,4 +38,4 @@ context = etree.XML("""
 """)
 
 template = DocxTemplate(filename)
-template.save(filename="x%s" % filename, context=context)
+template.save(filename="x%s" % filename, context=context, debug=debug, warning=warning)

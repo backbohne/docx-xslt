@@ -142,7 +142,7 @@ class XslElement(object):
             return xsl
 
         t = self.run.xpath('.//w:t',  namespaces=self.namespaces)[0]
-        text = remove_junk(t.text)
+        text = remove_junk(unicode(t.text))
 
         for xsl in filter(lambda xsl: xsl.strip(), text.split('xsl:')):
             try:

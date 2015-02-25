@@ -84,7 +84,7 @@ class XslEngine(BaseEngine):
         """Find all "XSL" styled runs, normalize related paragraph and returns list of XslElements"""
 
         def append_xsl_elements(xsl_elements, r, xsl):
-            if r:
+            if r is not None:
                 r.xpath('.//w:t',  namespaces=self.namespaces)[0].text = xsl
                 xe = XslElement(r, debug=self.debug_callback, warning=self.warning_callback)
                 xsl_elements.append(xe)
@@ -99,7 +99,7 @@ class XslEngine(BaseEngine):
                     text = ''.join(t.text for t in r.xpath('.//w:t', namespaces=self.namespaces))
                     if r.xpath('.//w:rPr/w:rStyle[@w:val="%s"]' % self.style, namespaces=self.namespaces):
                         xsl += text
-                        if not xsl_r and text:
+                        if xsl_r is None and text:
                             xsl_r = r
                         else:
                             r.getparent().remove(r)

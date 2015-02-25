@@ -53,12 +53,14 @@ class DocxTemplate(object):
         filename = filename or self.package.filename
         engine = kwargs.pop('engine', engines.DefaultEngine)
         context = kwargs.pop('context')
+        debug_callback = kwargs.pop('debug', debug)
+        warning_callback = kwargs.pop('warning', warning)
 
         # read docx XML string
         xml = self.package.get(self.main_document)
 
         # render XML
-        xml = engine(debug=debug, warning=warning).render(xml, context)
+        xml = engine(debug=debug_callback, warning=warning_callback).render(xml, context)
 
         # write docx document
         self.package.update(self.main_document, xml)
