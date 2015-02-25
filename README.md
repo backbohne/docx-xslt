@@ -1,6 +1,24 @@
 # docx-xslt
 XSL transformation for docx files
 
+docx-xslt tries to find meta text which has been formated with a specific character template called `XSL`.
+The meta text has the following syntax:
+
+* meta text:		XSL-COMMANDS
+* XSL-COMMANDS:		XSL-COMMAND XSL-COMMAND ...
+* XSL-COMMAND:		xsl:[CONTEXT:]COMMAND OPTIONS
+* CONTEXT:		body | p0 | p | r | t | tbl | tr | tc
+* COMMAND:		META-COMMAND | XSL-COMMAND
+* META-COMMAND:		meta META-SUB-COMMAND
+* META-SUB-COMMAND:	up | prev | next | cloneprev | clonenext | delete
+* XSL-COMMAND:		for-each | choose | when | otherwise | if | sort | value-of | text
+* OPTIONS:		TEXT | OPTION-NAME=OPTION-TEXT
+* TEXT:			text
+* OPTION-NAME:		select | test
+* OPTION-TEXT:          xpath text
+
+To insert a list of a product names, add `xsl:p:for-each select=.//products/* xsl:t:value-of select=name` and format the text with the `XSL` template.
+
 ```python
 from lxml import etree
 
