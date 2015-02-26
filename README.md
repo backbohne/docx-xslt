@@ -38,7 +38,5 @@ template.save(context=context)
 ## Installing
 
 ```bash
-pip install
+pip install docx-xslt
 ```
-
-
