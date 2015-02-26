@@ -1,5 +1,6 @@
+import os
 import sys
-sys.path.insert(0, '..')
+sys.path.insert(0, 'docxxslt')
 
 from lxml import etree
 from docxxslt import DocxTemplate, xsl
@@ -12,7 +13,7 @@ def debug(mesg):
 def warning(mesg):
     print mesg
 
-filename = "test.docx"
+filename = "tests/test.docx"
 context = etree.XML("""
 <data>
     <name>Testkunde ABC</name>
@@ -38,4 +39,4 @@ context = etree.XML("""
 """)
 
 template = DocxTemplate(filename)
-template.save(filename="x%s" % filename, context=context, debug=debug, warning=warning)
+template.save(filename="x%s" % os.path.basename(filename), context=context, debug=debug, warning=warning)
