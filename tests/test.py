@@ -5,8 +5,8 @@ sys.path.insert(0, 'docxxslt')
 from lxml import etree
 from docxxslt import DocxXsltTemplate, utils
 
-docx_in = "tests/test.docx"
-docx_out = "xtest.docx"
+docx_in = "tests/in.docx"
+docx_out = "tests/out.docx"
 xml_in = "tests/test.xml"
 context = etree.parse(xml_in)
 

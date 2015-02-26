@@ -6,7 +6,7 @@ SETUP  = $(PYTHON) ./setup.py
 
 clean:
 	find . -type f -name \*.pyc -exec rm {} \;
-	rm -rf *.egg-info *.docx .coverage
+	rm -rf *.egg-info .coverage
 
 distclean: clean
 	rm -rf dist docx-xslt-*
