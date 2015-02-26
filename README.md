@@ -28,6 +28,7 @@ To insert a list of a product names, just add `xsl:for-each select=.//products/*
 
 ```python
 from lxml import etree
+from docxxslt import DocxXsltTemplate
 
 context = etree.parse("products.xml")
 template = DocxXsltTemplate(filename)
