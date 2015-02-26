@@ -19,7 +19,7 @@ version = re.search(
 
 NAME = 'docx-xslt'
 VERSION = version
-DESCRIPTION = 'XSL transformation for Microsoft Word .docx files.'
+DESCRIPTION = 'XSL transformation for Microsoft Word .docx files'
 KEYWORDS = 'docx xslt office word'
 AUTHOR = 'Frank Bohnsack'
 AUTHOR_EMAIL = 'frank.bohnsack@gmail.com'
