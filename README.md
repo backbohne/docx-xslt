@@ -49,6 +49,6 @@ context = etree.XML("
 </data>
 ")
 
-template = DocxTemplate(filename)
+template = DocxXsltTemplate(filename)
 template.save(context=context)
 ```
