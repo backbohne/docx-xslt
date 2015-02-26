@@ -2,7 +2,9 @@
 
 *docx-xslt* is a Python library for adding XSL transformation for Microsoft Word .docx files.
 
-docx-xslt tries to find meta text which has been formated with a specific character template called `XSL`.
+The module uses Word "meta text" which has been formated with a specific character template called `XSL`, add XSL
+code and applies XSL transformation with the XML context.
+
 The meta text has the following syntax:
 
 * meta text:		XSL-COMMANDS
