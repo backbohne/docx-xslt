@@ -28,7 +28,7 @@ LICENSE = text_of('LICENSE')
 PACKAGES = find_packages(exclude=['tests', 'tests.*'])
 PACKAGE_DATA = {}
 
-INSTALL_REQUIRES = ['lxml>=2.3.2']
+INSTALL_REQUIRES = ['lxml>=2.3.2', 'unidecode>=0.04.17']
 TEST_SUITE = 'tests'
 TESTS_REQUIRE = []
 
