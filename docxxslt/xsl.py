@@ -2,24 +2,9 @@ import re
 import os
 from lxml import etree
 
-try:
-    from xml.sax.saxutils import unescape
-except ImportError:
-    from django.utils.html_parser import HTMLParser
-    def unescape(text):
-        return HTMLParser().unescape(text)
-
-try:
-    from unidecode import unidecode
-except ImportError:
-    print "please install python unidecode"
-    raise
-
-
+from .utils import *
 from .namespaces import NAMESPACES
 
-# enable debugging
-DEBUG = False
 
 CONTEXTS = ('root', 'body', 'p0', 'p', 'r', 't', 'tbl', 'tr', 'tc')
 META_COMMANDS = ('up', 'prev', 'next', 'cloneprev', 'clonenext', 'delete')
@@ -36,17 +21,13 @@ DEFAULT_CMD_TO_CONTEXT_MAPPING = {
 }
 
 
-def debug(mesg):
-    pass
-
-def warning(mesg):
-    pass
-
 class XslError(Exception):
     pass
 
+
 class ParseError(XslError):
     pass
+
 
 class ElementNotFound(XslError):
     pass
@@ -109,26 +90,18 @@ class XslCommand(object):
                 self.text = text
 
 
-class XslElement(object):
+class XslElement(LoggerMixin):
     """List thats represents a XSL command set"""
 
     namespaces = NAMESPACES
     w_ns = 'w'
     xsl_ns = 'xsl'
 
-    def __init__(self, r, debug=debug, warning=warning):
+    def __init__(self, r, logger=None):
         self.commands = []
         self.run = r
         self.parse()
-        self.debug_callback = debug
-        self.warning_callback = warning
-
-    def debug(self, mesg):
-        if DEBUG:
-            self.debug_callback(mesg)
-
-    def warning(self, mesg):
-        self.waring_callback(mesg)
+        self.logger = logger
 
     def parse(self):
         def remove_junk(xsl):
@@ -148,7 +121,7 @@ class XslElement(object):
             try:
                 cmd = XslCommand(xsl)
             except ParseError as e:
-                warning("%s ignore invalid XSL %s: %s" % (self.__class__.__name__, xsl, e))
+                self.error("%s ignore invalid XSL %s: %s" % (self.__class__.__name__, xsl, e))
             else:
                 # store commands in stack order
                 self.commands = [cmd] + self.commands

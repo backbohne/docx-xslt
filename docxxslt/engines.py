@@ -3,36 +3,16 @@ from lxml import etree
 from .nodes import fldChar, fldSimple
 from .xsl import XslElement
 from .namespaces import NAMESPACES
+from .utils import *
 
 
-def debug(mesg):
-    pass
-
-def warning(mesg):
-    pass
-
-def t2s(t):
-    return etree.tostring(t, pretty_print=True, encoding='utf-8')
-
-def s2t(s):
-    parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-    return etree.fromstring(bytes(bytearray(s)), parser=parser)
-
-
-class BaseEngine(object):
+class BaseEngine(LoggerMixin):
     """Base engine class"""
 
     namespaces = NAMESPACES
 
-    def __init__(self, debug=debug, warning=warning):
-        self.debug_callback = debug
-        self.warning_callback = warning
-
-    def debug(self, mesg):
-        self.debug_callback(mesg)
-
-    def warning(self, mesg):
-        self.waring_callback(mesg)
+    def __init__(self, **kwargs):
+        self.logger = kwargs.pop('logger', None)
 
     @property
     def xml(self):
@@ -86,7 +66,7 @@ class XslEngine(BaseEngine):
         def append_xsl_elements(xsl_elements, r, xsl):
             if r is not None:
                 r.xpath('.//w:t',  namespaces=self.namespaces)[0].text = xsl
-                xe = XslElement(r, debug=self.debug_callback, warning=self.warning_callback)
+                xe = XslElement(r, logger=self.logger)
                 xsl_elements.append(xe)
             return None, ''
 
@@ -122,7 +102,7 @@ class XslEngine(BaseEngine):
         for n in self.root.xpath('.//w:rStyle[@w:val="%s"]' % self.style, namespaces=self.namespaces):
             n.getparent().remove(n)
 
-    def render(self, xml, context):
+    def render(self, xml, context, raise_on_errors=True):
         """Render xml string and apply XSLT transfomation with context"""
 
         if xml:
@@ -147,18 +127,23 @@ class XslEngine(BaseEngine):
 
             #self.debug(self.xml)
 
-            # transform XSL
-            xsl = etree.XSLT(self.root)
-            self.root = xsl(context)
+            try:
+                # transform XSL
+                xsl = etree.XSLT(self.root)
+                self.root = xsl(context)
 
-            # log errors
-            for e in xsl.error_log:
-                self.warning("XSLT error at line %s col %s:" % (e.line, e.column))
-                self.warning("    message: %s" % e.message)
-                self.warning("    domain: %s (%d)" % (e.domain_name, e.domain))
-                self.warning('    type: %s (%d)' % (e.type_name, e.type))
-                self.warning('    level: %s (%d)' % (e.level_name, e.level))
-                self.warning('    filename: %s' % e.filename)
+            except etree.Error as e:
+                # log errors
+                for l in e.error_log:
+                    self.error("XSLT error at line %s col %s:" % (l.line, l.column))
+                    self.error("    message: %s" % l.message)
+                    self.error("    domain: %s (%d)" % (l.domain_name, l.domain))
+                    self.error('    type: %s (%d)' % (l.type_name, l.type))
+                    self.error('    level: %s (%d)' % (l.level_name, l.level))
+                    self.error('    filename: %s' % l.filename)
+
+                if raise_on_errors:
+                    raise
 
             return self.xml
 

@@ -1,17 +1,11 @@
+import logging
+
 from . import engines, package
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 
-def debug():
-    pass
-
-
-def warning():
-    pass
-
-
-class DocxTemplate(object):
+class DocxXsltTemplate(object):
     """Docx template renderer"""
 
     main_document = 'word/document.xml'
@@ -24,14 +18,13 @@ class DocxTemplate(object):
         filename = filename or self.package.filename
         engine = kwargs.pop('engine', engines.DefaultEngine)
         context = kwargs.pop('context')
-        debug_callback = kwargs.pop('debug', debug)
-        warning_callback = kwargs.pop('warning', warning)
+        logger = kwargs.pop('logger', logging.getLogger())
 
         # read docx XML string
         xml = self.package.get(self.main_document)
 
         # render XML
-        xml = engine(debug=debug_callback, warning=warning_callback).render(xml, context)
+        xml = engine(logger=logger).render(xml, context)
 
         # write docx document
         self.package.update(self.main_document, xml)
