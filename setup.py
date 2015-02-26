@@ -33,7 +33,6 @@ TEST_SUITE = 'tests'
 TESTS_REQUIRE = []
 
 CLASSIFIERS = [
-    'Development Status :: 1 - Alpha',
     'Environment :: Console',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: MIT License',
