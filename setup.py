@@ -24,7 +24,7 @@ KEYWORDS = 'docx xslt office word'
 AUTHOR = 'Frank Bohnsack'
 AUTHOR_EMAIL = 'frank.bohnsack@gmail.com'
 URL = 'https://github.com/backbohne/docx-xslt'
-LICENSE = text_of('LICENSE')
+LICENSE = text_of('LICENSE.txt')
 PACKAGES = find_packages(exclude=['tests', 'tests.*'])
 PACKAGE_DATA = {}
 
@@ -45,7 +45,7 @@ CLASSIFIERS = [
     'Topic :: Software Development :: Libraries'
 ]
 
-LONG_DESCRIPTION = text_of('README.md')
+LONG_DESCRIPTION = text_of('README.txt')
 
 params = {
     'name':             NAME,

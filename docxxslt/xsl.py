@@ -43,6 +43,12 @@ class XslCommand(object):
         return "xsl:%s:%s %s" % (self.context or '', self.cmd, self.meta_commands or self.text or self.options)
 
     def parse(self, xsl='text'):
+        """
+        TODO: add double-quoted string literals that allows for escaped double quotes
+        https://gist.github.com/prathe/2439752 or
+        http://www.metaltoad.com/blog/regex-quoted-string-escapable-quotes
+        """
+
         try:
             cmd_text, option_text = xsl.split(None, 1)
         except ValueError:

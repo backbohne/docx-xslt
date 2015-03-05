@@ -2,7 +2,7 @@ import logging
 
 from . import engines, package
 
-__version__ = '1.0.0'
+__version__ = '1.0.4'
 
 
 class DocxXsltTemplate(object):

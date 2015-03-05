@@ -2,7 +2,7 @@ MAKE   = make
 PYTHON = python
 SETUP  = $(PYTHON) ./setup.py
 
-.PHONY: clean distclean test sdist upload
+.PHONY: clean distclean test sdist upload readme
 
 clean:
 	find . -type f -name \*.pyc -exec rm {} \;
@@ -11,10 +11,13 @@ clean:
 distclean: clean
 	rm -rf dist docx-xslt-*
 
+readme: README.md
+	pandoc --from=markdown --to=plain README.md >README.txt
+
 test:
 	$(SETUP) test
 
-sdist:
+sdist: readme
 	$(SETUP) sdist
 
 upload:
